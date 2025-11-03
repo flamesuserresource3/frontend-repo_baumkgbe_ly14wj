@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { LogIn } from 'lucide-react';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -13,9 +12,9 @@ export default function Navbar() {
   const linkClasses =
     'px-3 py-2 text-sm md:text-base hover:opacity-70 transition-opacity';
 
-  const openDashboard = (e) => {
+  const openLogin = (e) => {
     e.preventDefault();
-    window.location.hash = '#dashboard';
+    window.location.hash = '#login';
   };
 
   return (
@@ -36,18 +35,14 @@ export default function Navbar() {
           <a href="https://cal.com/velodent-ogbkfv/20min" target="_blank" rel="noreferrer" className={linkClasses}>Contact / Book Now</a>
         </div>
         <div className="flex items-center gap-2">
-          {/* Premium Dashboard Button */}
+          {/* Dashboard button restored to original label and behavior */}
           <a
-            href="#dashboard"
-            onClick={openDashboard}
-            aria-label="Open Dashboard"
-            className="group relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black/20"
+            href="#login"
+            onClick={openLogin}
+            aria-label="Open Dashboard Login"
+            className="inline-flex items-center rounded-full border border-black px-4 py-2 text-sm font-medium hover:-translate-y-px transition-transform bg-white"
           >
-            <span className="absolute inset-0 rounded-full bg-gradient-to-b from-black/5 to-black/10" aria-hidden />
-            <span className="absolute inset-0 rounded-full ring-1 ring-inset ring-black/10 group-hover:ring-black/20 transition" aria-hidden />
-            <span className="absolute -inset-px rounded-full shadow-sm group-hover:shadow-md transition-shadow" aria-hidden />
-            <LogIn size={16} className="relative z-10 opacity-80 group-hover:opacity-100 transition-opacity" />
-            <span className="relative z-10 hidden sm:inline">Open Dashboard</span>
+            Dashboard
           </a>
 
           <a

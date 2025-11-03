@@ -1,58 +1,67 @@
 import React, { useEffect, useState } from 'react';
-import Dashboard from './components/Dashboard';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Sections from './components/Sections';
 import SignInOverlay from './components/SignInOverlay';
 
-const App = () => {
-  const [authed, setAuthed] = useState(false);
+export default function App() {
+  const [route, setRoute] = useState('home');
 
   useEffect(() => {
-    const syncFromHash = () => {
-      const isDash = window.location.hash === '#dashboard';
-      setAuthed(isDash);
+    const sync = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'login') return setRoute('login');
+      if (hash === 'dashboard') return setRoute('dashboard');
+      return setRoute('home');
     };
-    syncFromHash();
-    window.addEventListener('hashchange', syncFromHash);
-    return () => window.removeEventListener('hashchange', syncFromHash);
+    sync();
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
   }, []);
 
   const handleLoginSuccess = () => {
     window.location.hash = '#dashboard';
-    setAuthed(true);
+    setRoute('dashboard');
   };
 
-  const handleExit = () => {
-    // Preserve existing mock/demo flow: go back to access page
+  const handleLogout = () => {
     window.location.hash = '';
-    setAuthed(false);
+    setRoute('home');
   };
 
   return (
-    <div className="min-h-screen bg-white text-neutral-900">
-      {authed ? (
-        <Dashboard onExit={handleExit} />
-      ) : (
-        <>
-          <div className="relative isolate">
-            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-              <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Velodent</h1>
-              <p className="mt-3 max-w-xl text-neutral-600">
-                Welcome to the Velodent CRM demo. Access the dashboard to view a sample appointments overview.
-              </p>
-              <div className="mt-6">
-                <button
-                  onClick={() => handleLoginSuccess()}
-                  className="inline-flex items-center gap-2 rounded-full bg-black text-white px-5 py-3 text-sm font-medium shadow-[0_6px_20px_rgba(0,0,0,0.25)] ring-1 ring-white/10 transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(0,0,0,0.35)] focus:outline-none focus-visible:ring-2 focus-visible:ring-black/60"
-                >
-                  Open Dashboard
-                </button>
-              </div>
+    <div className="min-h-screen bg-white text-black">
+      <Navbar />
+
+      {route === 'home' && (
+        <main>
+          <Hero />
+          <Sections />
+        </main>
+      )}
+
+      {route === 'login' && (
+        <SignInOverlay onSuccess={handleLoginSuccess} />
+      )}
+
+      {route === 'dashboard' && (
+        <main className="pt-24 md:pt-28">
+          <section className="max-w-3xl mx-auto px-4 md:px-6 py-12">
+            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Dashboard</h1>
+            <p className="mt-2 text-black/70">
+              You are signed in. This view preserves the previous mock access flow and does not introduce new sections yet.
+            </p>
+            <div className="mt-6">
+              <button
+                onClick={handleLogout}
+                className="inline-flex items-center justify-center rounded-full border border-black px-5 py-2.5 text-sm font-medium hover:-translate-y-px transition-transform bg-white"
+              >
+                Log out
+              </button>
             </div>
-          </div>
-          <SignInOverlay onSuccess={handleLoginSuccess} />
-        </>
+          </section>
+        </main>
       )}
     </div>
   );
-};
-
-export default App;
+}
