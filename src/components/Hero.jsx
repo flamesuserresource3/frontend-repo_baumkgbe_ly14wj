@@ -1,17 +1,9 @@
-import Spline from '@splinetool/react-spline';
-
 export default function Hero() {
   return (
     <section id="home" className="relative pt-24 md:pt-28 bg-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-10 items-center">
-        <div className="order-2 md:order-1 text-center md:text-left">
-          <h1 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4">
-            AI Automation for Modern Dental Clinics
-          </h1>
-          <p className="text-base md:text-lg text-black/70 mb-6">
-            Velodent streamlines front-desk ops, patient onboarding, and recall systems using safe, compliant AI.
-          </p>
-          <div className="w-full aspect-video rounded-2xl border border-black/10 overflow-hidden shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 min-h-[80vh] flex items-center justify-center">
+        <div className="w-full max-w-5xl text-center">
+          <div className="w-full aspect-video rounded-2xl border border-black/10 overflow-hidden shadow-sm mx-auto">
             <iframe
               width="100%"
               height="100%"
@@ -23,6 +15,16 @@ export default function Hero() {
               className="w-full h-full"
             />
           </div>
+
+          <div className="mt-8 md:mt-10 max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-5xl font-semibold tracking-tight mb-3">
+              AI Automation for Modern Dental Clinics
+            </h1>
+            <p className="text-base md:text-lg text-black/70">
+              Velodent streamlines front-desk ops, patient onboarding, and recall systems using safe, compliant AI.
+            </p>
+          </div>
+
           <div className="mt-6">
             <p className="mb-3 text-sm md:text-base">Book a 20-Minute Discovery Call — Choose a Time That Works for You</p>
             <a
@@ -33,15 +35,6 @@ export default function Hero() {
             >
               Book Now
             </a>
-          </div>
-        </div>
-        <div className="order-1 md:order-2 relative h-[360px] md:h-[520px]">
-          <div className="absolute inset-0 rounded-3xl border border-black/10 overflow-hidden">
-            <Spline
-              scene="https://prod.spline.design/4cHQr84zOGAHOehh/scene.splinecode"
-              style={{ width: '100%', height: '100%' }}
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/40" />
           </div>
         </div>
       </div>
