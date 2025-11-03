@@ -1,6 +1,3 @@
-import { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-
 const GREEN = '#16a34a';
 const YELLOW = '#f59e0b';
 const RED = '#e11d48';
@@ -9,19 +6,18 @@ export default function AppointmentsSection() {
   return (
     <section className="mt-8">
       <h2 className="text-sm font-medium text-neutral-500 mb-3">Appointments</h2>
-      <ChartCard title="Bookings • Reschedules • Cancellations" note="Proportional, readable layout">
+      <ChartCard title="Bookings • Reschedules • Cancellations">
         <BookingsGroupedBar />
       </ChartCard>
     </section>
   );
 }
 
-function ChartCard({ title, note, children }) {
+function ChartCard({ title, children }) {
   return (
     <div className="rounded-xl border border-black/10 bg-white shadow-sm p-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-medium text-neutral-900">{title}</h3>
-        {note ? <span className="text-xs text-neutral-400">{note}</span> : null}
       </div>
       <div className="h-80">{children}</div>
     </div>
@@ -30,16 +26,11 @@ function ChartCard({ title, note, children }) {
 
 function BookingsGroupedBar() {
   const labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-  const data = useMemo(
-    () => ({
-      booked: [32, 40, 38, 44],
-      rescheduled: [8, 10, 7, 9],
-      cancelled: [3, 5, 4, 6],
-    }),
-    []
-  );
-
-  const [hover, setHover] = useState(null);
+  const data = {
+    booked: [32, 40, 38, 44],
+    rescheduled: [8, 10, 7, 9],
+    cancelled: [3, 5, 4, 6],
+  };
 
   const padding = { top: 24, right: 24, bottom: 40, left: 40 };
   const width = 760;
@@ -62,16 +53,14 @@ function BookingsGroupedBar() {
   return (
     <div className="w-full h-full relative">
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full">
-        {/* axes */}
         <g stroke="#e5e7eb">
           {[0, 1, 2, 3].map((i) => (
             <line key={i} x1={padding.left} x2={width - padding.right} y1={padding.top + i * ((height - padding.top - padding.bottom) / 4)} y2={padding.top + i * ((height - padding.top - padding.bottom) / 4)} strokeWidth="1" />
           ))}
         </g>
 
-        {/* groups */}
         {labels.map((label, i) => {
-          const gx = padding.left + i * groupWidth + groupWidth / 2 - (barWidth * 1.5);
+          const gx = padding.left + i * groupWidth + groupWidth / 2 - barWidth * 1.5;
           const bars = [
             { key: 'Booked', value: data.booked[i], color: GREEN, x: gx },
             { key: 'Rescheduled', value: data.rescheduled[i], color: YELLOW, x: gx + barWidth + 8 },
@@ -79,42 +68,21 @@ function BookingsGroupedBar() {
           ];
           return (
             <g key={label}>
-              {/* label */}
               <text x={padding.left + i * groupWidth + groupWidth / 2} y={height - 12} textAnchor="middle" fontSize="10" fill="#6b7280">{label}</text>
-              {bars.map((b, bi) => {
+              {bars.map((b) => {
                 const y = yScale(b.value);
                 const h = height - padding.bottom - y;
-                return (
-                  <motion.rect
-                    key={`${label}-${b.key}`}
-                    x={b.x}
-                    y={y}
-                    width={barWidth}
-                    height={h}
-                    rx="4"
-                    fill={b.color}
-                    initial={{ height: 0, y: height - padding.bottom }}
-                    animate={{ height: h, y }}
-                    transition={{ duration: 0.6, delay: bi * 0.05 + i * 0.05 }}
-                    onMouseEnter={(e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      setHover({ x: rect.x + rect.width / 2, y: rect.y, label, key: b.key, value: b.value });
-                    }}
-                    onMouseLeave={() => setHover(null)}
-                  />
-                );
+                return <rect key={`${label}-${b.key}`} x={b.x} y={y} width={barWidth} height={h} rx="4" fill={b.color} />;
               })}
             </g>
           );
         })}
 
-        {/* trend line */}
-        <motion.path d={dPath} fill="none" stroke="#111827" strokeOpacity="0.6" strokeWidth="2" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.8 }} />
+        <path d={dPath} fill="none" stroke="#111827" strokeOpacity="0.6" strokeWidth="2" />
         {linePoints.map(([x, y], idx) => (
           <circle key={idx} cx={x} cy={y} r={3} fill="#111827" fillOpacity="0.6" />
         ))}
 
-        {/* legend */}
         <g transform={`translate(${width - padding.right - 230}, ${padding.top})`}>
           {[
             { name: 'Booked', color: GREEN },
@@ -128,14 +96,6 @@ function BookingsGroupedBar() {
           ))}
         </g>
       </svg>
-
-      {hover && (
-        <div className="pointer-events-none fixed z-50" style={{ left: hover.x, top: hover.y - 8 }}>
-          <div className="-translate-x-1/2 -translate-y-full rounded-md bg-black text-white text-xs px-2 py-1 shadow">
-            {hover.label} • {hover.key}: {hover.value}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

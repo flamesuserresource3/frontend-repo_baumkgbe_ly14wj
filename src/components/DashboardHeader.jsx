@@ -1,34 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
 import { LayoutDashboard, Activity, PhoneCall, Calendar } from 'lucide-react';
 
-function useCountUp(target = 0, duration = 1200) {
-  const [value, setValue] = useState(0);
-  const startRef = useRef(null);
-
-  useEffect(() => {
-    let raf;
-    const start = performance.now();
-    startRef.current = start;
-
-    const tick = (now) => {
-      const elapsed = now - startRef.current;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.floor(eased * target));
-      if (progress < 1) raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target, duration]);
-
-  return value;
-}
-
 export default function DashboardHeader() {
-  const booked = useCountUp(248);
-  const calls = useCountUp(132);
-  const conversions = useCountUp(58);
+  const booked = 248;
+  const calls = 132;
+  const conversions = 58;
 
   return (
     <header className="w-full">
@@ -39,7 +14,7 @@ export default function DashboardHeader() {
           </div>
           <div>
             <h1 className="text-xl font-semibold tracking-tight">Velodent CRM — Dashboard</h1>
-            <p className="text-sm text-neutral-500">Premium minimalist theme • Data is simulated for demo</p>
+            <p className="text-sm text-neutral-500">Minimalist theme • Stable build</p>
           </div>
         </div>
         <a href="#" className="text-sm text-neutral-500 hover:text-black transition-colors">Exit</a>
@@ -62,7 +37,6 @@ function KpiCard({ icon: Icon, label, value, color = 'text-green-600', badgeBg =
           <p className="text-sm text-neutral-500">{label}</p>
           <div className="mt-1 flex items-baseline gap-2">
             <span className={`text-2xl font-semibold tabular-nums ${color}`}>{value}</span>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${badgeBg} ${color}`}>live</span>
           </div>
         </div>
         <div className={`h-10 w-10 rounded-lg border border-black/10 flex items-center justify-center ${badgeBg}`}>

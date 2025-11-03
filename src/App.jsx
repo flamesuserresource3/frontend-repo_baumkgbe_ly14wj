@@ -2,6 +2,9 @@ import DashboardHeader from './components/DashboardHeader.jsx';
 import AnalyticsSection from './components/AnalyticsSection.jsx';
 import CallsFollowupsSection from './components/CallsFollowupsSection.jsx';
 import AppointmentsSection from './components/AppointmentsSection.jsx';
+import LeadsSection from './components/LeadsSection.jsx';
+import PatientManagementSection from './components/PatientManagementSection.jsx';
+import NotificationsSection from './components/NotificationsSection.jsx';
 
 export default function App() {
   return (
@@ -11,6 +14,9 @@ export default function App() {
         <AnalyticsSection />
         <CallsFollowupsSection />
         <AppointmentsSection />
+        <LeadsSection />
+        <PatientManagementSection />
+        <NotificationsSection />
       </main>
     </div>
   );
