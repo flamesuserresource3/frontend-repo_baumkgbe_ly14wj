@@ -1,22 +1,16 @@
-import DashboardHeader from './components/DashboardHeader.jsx';
-import AnalyticsSection from './components/AnalyticsSection.jsx';
-import CallsFollowupsSection from './components/CallsFollowupsSection.jsx';
-import AppointmentsSection from './components/AppointmentsSection.jsx';
-import LeadsSection from './components/LeadsSection.jsx';
-import PatientManagementSection from './components/PatientManagementSection.jsx';
-import NotificationsSection from './components/NotificationsSection.jsx';
+import Navbar from './components/Navbar.jsx';
+import Hero from './components/Hero.jsx';
+import Sections from './components/Sections.jsx';
+import Footer from './components/Footer.jsx';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900">
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        <DashboardHeader />
-        <AnalyticsSection />
-        <CallsFollowupsSection />
-        <AppointmentsSection />
-        <LeadsSection />
-        <PatientManagementSection />
-        <NotificationsSection />
+    <div className="bg-white text-black min-h-screen">
+      <Navbar />
+      <main>
+        <Hero />
+        <Sections />
+        <Footer />
       </main>
     </div>
   );

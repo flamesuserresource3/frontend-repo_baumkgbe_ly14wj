@@ -12,11 +12,6 @@ export default function Navbar() {
   const linkClasses =
     'px-3 py-2 text-sm md:text-base hover:opacity-70 transition-opacity';
 
-  const openLogin = (e) => {
-    e.preventDefault();
-    window.location.hash = '#login';
-  };
-
   return (
     <header className={`fixed top-0 inset-x-0 z-50 transition-all ${
       scrolled ? 'backdrop-blur bg-white/70 border-b border-black/5' : 'bg-white'
@@ -35,21 +30,11 @@ export default function Navbar() {
           <a href="https://cal.com/velodent-ogbkfv/20min" target="_blank" rel="noreferrer" className={linkClasses}>Contact / Book Now</a>
         </div>
         <div className="flex items-center gap-2">
-          {/* Dashboard button restored to original label and behavior */}
-          <a
-            href="#login"
-            onClick={openLogin}
-            aria-label="Open Dashboard Login"
-            className="inline-flex items-center rounded-full border border-black px-4 py-2 text-sm font-medium hover:-translate-y-px transition-transform bg-white"
-          >
-            Dashboard
-          </a>
-
           <a
             href="https://cal.com/velodent-ogbkfv/20min"
             target="_blank"
             rel="noreferrer"
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-2 text-sm font-medium hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-2 text-sm font-medium hover:opacity-90"
           >
             Book Now
           </a>
