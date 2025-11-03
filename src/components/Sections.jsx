@@ -1,5 +1,6 @@
 import { Calendar, Headphones, Shield, CreditCard, PhoneCall, BarChart3, Star, Quote, HelpCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 function ServiceCard({ icon: Icon, title, desc, index }) {
   return (
@@ -30,6 +31,39 @@ function Metric({ value, label }) {
 }
 
 export default function Sections() {
+  const faqs = [
+    {
+      q: 'How long does it take to deliver the full AI automation system?',
+      a: 'Most clinics go live in 5–10 business days. Day 1–2: discovery and system mapping; Day 3–5: integration and testing; Day 6–10: staff training, soft launch, and optimization.'
+    },
+    {
+      q: 'How is pricing determined based on the complexity of the AI infrastructure?',
+      a: 'Pricing is scoped to call volume, number of locations, integrations, and workflows (e.g., insurance, recalls, payments). We offer tiered plans with flat monthly pricing and optional usage add-ons.'
+    },
+    {
+      q: 'How does Velodent ensure patient data privacy and compliance?',
+      a: 'We use encryption in transit and at rest, signed BAAs, role-based access, audit logging, and strict data retention controls. Our infrastructure and processes are designed to support HIPAA compliance.'
+    },
+    {
+      q: 'What kind of support and maintenance do clients receive?',
+      a: 'Dedicated success manager, proactive monitoring, monthly optimization reviews, and priority support during business hours with 24/7 incident coverage.'
+    },
+    {
+      q: 'Can Velodent integrate with existing dental management software?',
+      a: 'Yes. We integrate with leading PMS/EHR systems and phone platforms. Where direct APIs are limited, we use secure middleware and vetted connectors.'
+    },
+    {
+      q: 'What measurable outcomes should we expect?',
+      a: 'Typical results include 20–40% fewer no-shows, higher online booking rates, faster insurance checks, and 2× efficiency ROI within 60–90 days.'
+    },
+  ];
+
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggle = (idx) => {
+    setOpenIndex((prev) => (prev === idx ? null : idx));
+  };
+
   return (
     <>
       {/* About */}
@@ -182,44 +216,52 @@ export default function Sections() {
       <section id="faq" className="bg-white">
         <div className="max-w-4xl mx-auto px-4 md:px-6 py-16 md:py-20">
           <h2 className="text-2xl md:text-4xl font-semibold tracking-tight mb-6">Frequently Asked Questions</h2>
-          <div className="divide-y divide-black/10 rounded-2xl border border-black/10 overflow-hidden">
-            {[
-              {
-                q: 'How long does it take to deliver the full AI automation system?',
-                a: 'Most clinics go live in 5–10 business days. Day 1–2: discovery and system mapping; Day 3–5: integration and testing; Day 6–10: staff training, soft launch, and optimization.'
-              },
-              {
-                q: 'How is pricing determined based on the complexity of the AI infrastructure?',
-                a: 'Pricing is scoped to call volume, number of locations, integrations, and workflows (e.g., insurance, recalls, payments). We offer tiered plans with flat monthly pricing and optional usage add-ons.'
-              },
-              {
-                q: 'How does Velodent ensure patient data privacy and compliance?',
-                a: 'We use encryption in transit and at rest, signed BAAs, role-based access, audit logging, and strict data retention controls. Our infrastructure and processes are designed to support HIPAA compliance.'
-              },
-              {
-                q: 'What kind of support and maintenance do clients receive?',
-                a: 'Dedicated success manager, proactive monitoring, monthly optimization reviews, and priority support during business hours with 24/7 incident coverage.'
-              },
-              {
-                q: 'Can Velodent integrate with existing dental management software?',
-                a: 'Yes. We integrate with leading PMS/EHR systems and phone platforms. Where direct APIs are limited, we use secure middleware and vetted connectors.'
-              },
-              {
-                q: 'What measurable outcomes should we expect?',
-                a: 'Typical results include 20–40% fewer no-shows, higher online booking rates, faster insurance checks, and 2× efficiency ROI within 60–90 days.'
-              },
-            ].map((item, i) => (
-              <details key={i} className="group open:bg-white/60">
-                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer select-none">
-                  <div className="flex items-center gap-3">
-                    <HelpCircle size={16} />
-                    <span className="font-medium">{item.q}</span>
-                  </div>
-                  <span className="text-sm text-black/50 group-open:rotate-180 transition-transform">▾</span>
-                </summary>
-                <div className="px-5 pb-5 text-sm text-black/70">{item.a}</div>
-              </details>
-            ))}
+          <div className="rounded-2xl border border-black/10 overflow-hidden">
+            {faqs.map((item, i) => {
+              const open = openIndex === i;
+              const contentId = `faq-content-${i}`;
+              const buttonId = `faq-trigger-${i}`;
+              return (
+                <div key={i} className="border-t first:border-t-0 border-black/10">
+                  <button
+                    id={buttonId}
+                    aria-controls={contentId}
+                    aria-expanded={open}
+                    onClick={() => toggle(i)}
+                    className={`w-full flex items-center justify-between px-5 py-4 text-left select-none transition-colors group ${open ? 'bg-white' : 'bg-white/60 hover:bg-white/80'}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <HelpCircle size={16} className="text-black/70 group-hover:text-black" />
+                      <span className="font-medium">{item.q}</span>
+                    </div>
+                    <motion.span
+                      animate={{ rotate: open ? 180 : 0 }}
+                      transition={{ duration: 0.25, ease: 'easeOut' }}
+                      className="text-sm text-black/50"
+                    >
+                      ▾
+                    </motion.span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {open && (
+                      <motion.div
+                        id={contentId}
+                        role="region"
+                        aria-labelledby={buttonId}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-5 pb-5 text-sm text-black/70">{item.a}</div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
