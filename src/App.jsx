@@ -1,110 +1,58 @@
-import { useEffect, useState } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Sections from './components/Sections';
-import Footer from './components/Footer';
+import React, { useEffect, useState } from 'react';
 import Dashboard from './components/Dashboard';
+import SignInOverlay from './components/SignInOverlay';
 
-function SignInOverlay({ onClose }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [step, setStep] = useState('signin'); // signin | dashboard
-  const [error, setError] = useState('');
+const App = () => {
+  const [authed, setAuthed] = useState(false);
 
-  const validate = () => {
-    const okEmail = /.+@.+\..+/.test(email);
-    const okPass = password.length >= 6;
-    if (!okEmail) return 'Please enter a valid email address.';
-    if (!okPass) return 'Password must be at least 6 characters.';
-    return '';
+  useEffect(() => {
+    const syncFromHash = () => {
+      const isDash = window.location.hash === '#dashboard';
+      setAuthed(isDash);
+    };
+    syncFromHash();
+    window.addEventListener('hashchange', syncFromHash);
+    return () => window.removeEventListener('hashchange', syncFromHash);
+  }, []);
+
+  const handleLoginSuccess = () => {
+    window.location.hash = '#dashboard';
+    setAuthed(true);
   };
 
-  const submit = (e) => {
-    e.preventDefault();
-    const v = validate();
-    if (v) {
-      setError(v);
-    } else {
-      // Mock access granted
-      setError('');
-      setStep('dashboard');
-    }
+  const handleExit = () => {
+    // Preserve existing mock/demo flow: go back to access page
+    window.location.hash = '';
+    setAuthed(false);
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-white text-black">
-      {step === 'signin' ? (
-        <div className="min-h-full flex items-center justify-center p-6">
-          <button aria-label="Close" onClick={onClose} className="absolute top-4 right-4 text-sm underline">Close</button>
-          <div className="w-full max-w-md p-8 rounded-2xl border border-black/10 bg-white shadow-sm">
-            <h2 className="text-2xl font-semibold mb-2 text-center">Sign in to Dashboard</h2>
-            <p className="text-center text-sm opacity-70 mb-6">Demo access — any valid credentials will work.</p>
-            <form onSubmit={submit} className="space-y-4">
-              <div>
-                <label className="block text-sm mb-1">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full border border-black/10 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black"
-                  placeholder="you@clinic.com"
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full border border-black/10 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black"
-                  placeholder="••••••••"
-                />
-                <div className="mt-2">
-                  <button type="button" className="text-sm underline">Forgot Password?</button>
-                </div>
-              </div>
-              {error && <div className="text-sm text-red-600">{error}</div>}
-              <div className="flex items-center justify-between">
-                <button type="submit" className="rounded-full bg-black text-white px-5 py-2 text-sm hover:opacity-90">Sign In</button>
-                <span className="text-xs opacity-60">Demo mode</span>
-              </div>
-            </form>
-          </div>
-        </div>
+    <div className="min-h-screen bg-white text-neutral-900">
+      {authed ? (
+        <Dashboard onExit={handleExit} />
       ) : (
-        <Dashboard onClose={onClose} />
+        <>
+          <div className="relative isolate">
+            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+              <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Velodent</h1>
+              <p className="mt-3 max-w-xl text-neutral-600">
+                Welcome to the Velodent CRM demo. Access the dashboard to view a sample appointments overview.
+              </p>
+              <div className="mt-6">
+                <button
+                  onClick={() => handleLoginSuccess()}
+                  className="inline-flex items-center gap-2 rounded-full bg-black text-white px-5 py-3 text-sm font-medium shadow-[0_6px_20px_rgba(0,0,0,0.25)] ring-1 ring-white/10 transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(0,0,0,0.35)] focus:outline-none focus-visible:ring-2 focus-visible:ring-black/60"
+                >
+                  Open Dashboard
+                </button>
+              </div>
+            </div>
+          </div>
+          <SignInOverlay onSuccess={handleLoginSuccess} />
+        </>
       )}
     </div>
   );
-}
+};
 
-export default function App() {
-  const [showOverlay, setShowOverlay] = useState(false);
-
-  useEffect(() => {
-    const onHash = () => setShowOverlay(window.location.hash === '#dashboard');
-    onHash();
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
-
-  const closeOverlay = () => {
-    history.replaceState(null, '', ' ');
-    setShowOverlay(false);
-  };
-
-  return (
-    <div className="min-h-screen bg-white text-black">
-      <Navbar />
-      <main>
-        <Hero />
-        <Sections />
-      </main>
-      <Footer />
-
-      {showOverlay && <SignInOverlay onClose={closeOverlay} />}
-    </div>
-  );
-}
+export default App;
