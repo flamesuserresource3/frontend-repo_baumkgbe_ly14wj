@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Bell, CalendarCheck, PhoneCall, Users2, BarChart3, Activity, CheckCircle2, Clock3, AlertTriangle } from 'lucide-react';
 import DashboardNav from './DashboardNav';
 import KpiCard from './KpiCard';
@@ -12,18 +12,15 @@ export default function DashboardCRM({ onExit }) {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      {/* Dashboard top bar (separate from main site navbar) */}
+      {/* Top section: prominent title + elegant exit button */}
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-black/10">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-black text-white flex items-center justify-center font-bold">V</div>
-            <div className="leading-tight">
-              <div className="font-semibold">Velodent CRM</div>
-              <div className="text-xs text-black/60">Dashboard</div>
-            </div>
+        <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Velodent CRM</h1>
+          <div className="shrink-0">
+            <ExitButton onClick={onExit} label="Exit / Logout" />
           </div>
-          <ExitButton onClick={onExit} label="Exit Dashboard" />
         </div>
+        {/* Modern, interactive navigation */}
         <DashboardNav active={tab} onChange={setTab} />
       </header>
 
