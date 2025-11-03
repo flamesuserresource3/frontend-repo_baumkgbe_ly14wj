@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import DashboardNav from './DashboardNav';
 import KpiCard from './KpiCard';
 import Counter from './Counter';
-import { StackedBarChart, LineChart, PieChart, DonutChart, Heatmap, ProgressBar } from './SimpleCharts';
+import { StackedBarChart, LineChart, PieChart, DonutChart, Heatmap, ProgressBar, GroupedBarWithLine } from './SimpleCharts';
 
 export default function Dashboard({ onClose }) {
   const [tab, setTab] = useState('appointments');
@@ -21,23 +21,50 @@ export default function Dashboard({ onClose }) {
         <AnimatePresence mode="wait">
           {tab === 'appointments' && (
             <Section key="appointments" title="Appointments">
+              {/* KPI Row */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                <KpiCard label="Today" value={<Counter to={12} />} delta={8} deltaLabel="vs yesterday" tone="neutral" />
-                <KpiCard label="This Week" value={<Counter to={64} />} delta={12} deltaLabel="vs last week" />
-                <KpiCard label="Cancellation Rate" value={<span><Counter to={7} />%</span>} delta={-3} deltaLabel="improvement" />
+                <KpiCard label="Booked (Today)" value={<Counter to={48} />} delta={12} deltaLabel="vs yesterday" tone="success" />
+                <KpiCard label="Rescheduled" value={<Counter to={9} />} delta={2} deltaLabel="today" tone="warning" />
+                <KpiCard label="Cancelled" value={<Counter to={4} />} delta={-1} deltaLabel="today" tone="danger" />
               </div>
+
+              {/* Chart + Legend */}
+              <Card title="Weekly Overview" className="mb-6">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <div className="text-sm opacity-70">Bookings, reschedules and cancellations over the last 7 days.</div>
+                  <div className="flex items-center gap-3 text-xs">
+                    <LegendDot color="#16a34a" label="Booked" />
+                    <LegendDot color="#f59e0b" label="Rescheduled" />
+                    <LegendDot color="#e11d48" label="Cancelled" />
+                    <LegendDot color="#111111" label="Trend" hollow />
+                  </div>
+                </div>
+                <GroupedBarWithLine
+                  data={[
+                    { label: 'Mon', booked: 10, rescheduled: 2, cancelled: 1, trend: 13 },
+                    { label: 'Tue', booked: 12, rescheduled: 1, cancelled: 2, trend: 12 },
+                    { label: 'Wed', booked: 11, rescheduled: 3, cancelled: 1, trend: 14 },
+                    { label: 'Thu', booked: 15, rescheduled: 2, cancelled: 1, trend: 15 },
+                    { label: 'Fri', booked: 14, rescheduled: 2, cancelled: 3, trend: 16 },
+                    { label: 'Sat', booked: 9,  rescheduled: 1, cancelled: 1, trend: 10 },
+                    { label: 'Sun', booked: 7,  rescheduled: 0, cancelled: 1, trend: 7 },
+                  ]}
+                />
+              </Card>
+
+              {/* Secondary split: trend line and breakdown */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card title="Booked / Rescheduled / Cancelled">
-                  <StackedBarChart data={[
-                    { label: 'Mon', values: [9, 2, 1], colors: ['#111', '#666', '#e11d48'] },
-                    { label: 'Tue', values: [11, 1, 1], colors: ['#111', '#666', '#e11d48'] },
-                    { label: 'Wed', values: [10, 2, 2], colors: ['#111', '#666', '#e11d48'] },
-                    { label: 'Thu', values: [13, 1, 0], colors: ['#111', '#666', '#e11d48'] },
-                    { label: 'Fri', values: [12, 2, 1], colors: ['#111', '#666', '#e11d48'] },
-                  ]} />
-                </Card>
                 <Card title="Trend">
                   <LineChart color="#111" data={[{ y: 10 }, { y: 12 }, { y: 11 }, { y: 14 }, { y: 15 }, { y: 13 }, { y: 16 }]} />
+                </Card>
+                <Card title="Breakdown (Stacked)">
+                  <StackedBarChart data={[
+                    { label: 'Mon', values: [10, 2, 1], colors: ['#16a34a', '#f59e0b', '#e11d48'] },
+                    { label: 'Tue', values: [12, 1, 2], colors: ['#16a34a', '#f59e0b', '#e11d48'] },
+                    { label: 'Wed', values: [11, 3, 1], colors: ['#16a34a', '#f59e0b', '#e11d48'] },
+                    { label: 'Thu', values: [15, 2, 1], colors: ['#16a34a', '#f59e0b', '#e11d48'] },
+                    { label: 'Fri', values: [14, 2, 3], colors: ['#16a34a', '#f59e0b', '#e11d48'] },
+                  ]} />
                 </Card>
               </div>
             </Section>
@@ -135,7 +162,7 @@ export default function Dashboard({ onClose }) {
                         { name: 'Priya Patel', status: 'Active', ins: 'Pending', claim: 'Review' },
                         { name: 'Diego Rivera', status: 'Active', ins: 'Verified', claim: 'Submitted' },
                       ].map((p) => (
-                        <tr key={p.name} className="border-t border-black/10">
+                        <tr key={p.name} className="border-top border-black/10">
                           <td className="py-2">{p.name}</td>
                           <td><Badge tone={p.status === 'Active' ? 'success' : 'warning'}>{p.status}</Badge></td>
                           <td><Badge tone={p.ins === 'Verified' ? 'success' : p.ins === 'Pending' ? 'warning' : 'neutral'}>{p.ins}</Badge></td>
@@ -230,5 +257,17 @@ function Badge({ children, tone = 'neutral' }) {
   };
   return (
     <span className={`px-2 py-0.5 rounded-full text-xs border ${tones[tone]}`}>{children}</span>
+  );
+}
+
+function LegendDot({ color, label, hollow = false }) {
+  return (
+    <span className="inline-flex items-center gap-2">
+      <span
+        className={`h-2 w-2 rounded-sm ${hollow ? 'ring-1 ring-black' : ''}`}
+        style={{ backgroundColor: hollow ? 'transparent' : color }}
+      />
+      <span className="text-xs opacity-70">{label}</span>
+    </span>
   );
 }

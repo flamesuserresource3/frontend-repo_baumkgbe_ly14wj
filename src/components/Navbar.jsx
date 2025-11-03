@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -36,15 +36,20 @@ export default function Navbar() {
           <a href="https://cal.com/velodent-ogbkfv/20min" target="_blank" rel="noreferrer" className={linkClasses}>Contact / Book Now</a>
         </div>
         <div className="flex items-center gap-2">
+          {/* Premium Dashboard Button */}
           <a
             href="#dashboard"
             onClick={openDashboard}
-            className="inline-flex items-center gap-2 rounded-full border border-black px-4 py-2 text-sm font-medium hover:-translate-y-px transition-transform"
             aria-label="Open Dashboard"
+            className="group relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black/20"
           >
-            <LogIn size={16} />
-            <span className="hidden sm:inline">Dashboard</span>
+            <span className="absolute inset-0 rounded-full bg-gradient-to-b from-black/5 to-black/10" aria-hidden />
+            <span className="absolute inset-0 rounded-full ring-1 ring-inset ring-black/10 group-hover:ring-black/20 transition" aria-hidden />
+            <span className="absolute -inset-px rounded-full shadow-sm group-hover:shadow-md transition-shadow" aria-hidden />
+            <LogIn size={16} className="relative z-10 opacity-80 group-hover:opacity-100 transition-opacity" />
+            <span className="relative z-10 hidden sm:inline">Open Dashboard</span>
           </a>
+
           <a
             href="https://cal.com/velodent-ogbkfv/20min"
             target="_blank"
@@ -52,7 +57,6 @@ export default function Navbar() {
             className="hidden md:inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-2 text-sm font-medium hover:opacity-90"
           >
             Book Now
-            <ArrowRight size={16} />
           </a>
         </div>
       </nav>
