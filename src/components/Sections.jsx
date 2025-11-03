@@ -104,11 +104,36 @@ export default function Sections() {
             <Star className="hidden md:block" />
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {[`“Velodent feels like an elite front-desk team that never sleeps.”`, `“The ROI is obvious — our phones are finally an asset.”`, `“Setup was painless and privacy checks passed instantly.”`].map((q, i) => (
+            {[
+              {
+                q: '“Velodent feels like an elite front-desk team that never sleeps.”',
+                a: '— Dr. Patel, Downtown Family Dental'
+              },
+              {
+                q: '“We cut no-shows by nearly a third and filled hygiene gaps automatically.”',
+                a: '— Office Manager, CS Dental'
+              },
+              {
+                q: '“Our online booking rate improved and we saw a 2× ROI within two months.”',
+                a: '— Dr. Nguyen, SmileWorks'
+              },
+              {
+                q: '“Insurance checks went from minutes to seconds — patients notice the difference.”',
+                a: '— Billing Lead, BrightSmile Pediatrics'
+              },
+              {
+                q: '“24/7 coverage means weekend calls finally convert. The pipeline is healthier than ever.”',
+                a: '— Practice Owner, Lakeside Dental'
+              },
+              {
+                q: '“Onboarding was smooth, and support actually feels proactive — not reactive.”',
+                a: '— Operations Director, OrthoPlus Aligners'
+              },
+            ].map((item, i) => (
               <figure key={i} className="rounded-2xl border border-black/10 p-6 bg-white/70">
                 <Quote className="mb-3" />
-                <blockquote className="text-sm text-black/80">{q}</blockquote>
-                <figcaption className="mt-4 text-xs text-black/60">— {['Dr. Patel', 'Office Manager, CS Dental', 'Dr. Nguyen'][i]}</figcaption>
+                <blockquote className="text-sm text-black/80">{item.q}</blockquote>
+                <figcaption className="mt-4 text-xs text-black/60">{item.a}</figcaption>
               </figure>
             ))}
           </div>
@@ -122,20 +147,28 @@ export default function Sections() {
           <div className="divide-y divide-black/10 rounded-2xl border border-black/10 overflow-hidden">
             {[
               {
-                q: 'Is patient data secure and compliant?',
-                a: 'Yes. We follow strict privacy controls with encryption in transit and at rest, role-based access, and audit trails.'
+                q: 'How long does it take to deliver the full AI automation system?',
+                a: 'Most clinics go live in 5–10 business days. Day 1–2: discovery and system mapping; Day 3–5: integration and testing; Day 6–10: staff training, soft launch, and optimization.'
               },
               {
-                q: 'How fast is setup?',
-                a: 'Most clinics go live in under a week with our guided onboarding and templates.'
+                q: 'How is pricing determined based on the complexity of the AI infrastructure?',
+                a: 'Pricing is scoped to call volume, number of locations, integrations, and workflows (e.g., insurance, recalls, payments). We offer tiered plans with flat monthly pricing and optional usage add-ons.'
               },
               {
-                q: 'Do you handle insurance verification?',
-                a: 'We automate eligibility checks and pre-auth steps and surface results directly in your workflow.'
+                q: 'How does Velodent ensure patient data privacy and compliance?',
+                a: 'We use encryption in transit and at rest, signed BAAs, role-based access, audit logging, and strict data retention controls. Our infrastructure and processes are designed to support HIPAA compliance.'
               },
               {
-                q: 'What ROI can we expect?',
-                a: 'We guarantee 2× efficiency ROI, with typical gains in show rates, lead conversion, and staff time savings.'
+                q: 'What kind of support and maintenance do clients receive?',
+                a: 'Dedicated success manager, proactive monitoring, monthly optimization reviews, and priority support during business hours with 24/7 incident coverage.'
+              },
+              {
+                q: 'Can Velodent integrate with existing dental management software?',
+                a: 'Yes. We integrate with leading PMS/EHR systems and phone platforms. Where direct APIs are limited, we use secure middleware and vetted connectors.'
+              },
+              {
+                q: 'What measurable outcomes should we expect?',
+                a: 'Typical results include 20–40% fewer no-shows, higher online booking rates, faster insurance checks, and 2× efficiency ROI within 60–90 days.'
               },
             ].map((item, i) => (
               <details key={i} className="group open:bg-white/60">
