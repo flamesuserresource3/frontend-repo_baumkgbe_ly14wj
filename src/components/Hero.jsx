@@ -3,7 +3,18 @@ export default function Hero() {
     <section id="home" className="relative pt-24 md:pt-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-6 min-h-[80vh] flex items-center justify-center">
         <div className="w-full max-w-5xl text-center">
-          <div className="w-full aspect-video rounded-2xl border border-black/10 overflow-hidden shadow-sm mx-auto">
+          {/* Heading and subheading moved above the video, keeping styles unchanged */}
+          <div className="max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-5xl font-semibold tracking-tight mb-3">
+              AI Automation for Modern Dental Clinics
+            </h1>
+            <p className="text-base md:text-lg text-black/70">
+              Velodent streamlines front-desk ops, patient onboarding, and recall systems using safe, compliant AI.
+            </p>
+          </div>
+
+          {/* Video remains centered with identical size and styling */}
+          <div className="w-full aspect-video rounded-2xl border border-black/10 overflow-hidden shadow-sm mx-auto mt-8 md:mt-10">
             <iframe
               width="100%"
               height="100%"
@@ -16,15 +27,7 @@ export default function Hero() {
             />
           </div>
 
-          <div className="mt-8 md:mt-10 max-w-3xl mx-auto">
-            <h1 className="text-3xl md:text-5xl font-semibold tracking-tight mb-3">
-              AI Automation for Modern Dental Clinics
-            </h1>
-            <p className="text-base md:text-lg text-black/70">
-              Velodent streamlines front-desk ops, patient onboarding, and recall systems using safe, compliant AI.
-            </p>
-          </div>
-
+          {/* CTA remains in its position below the video */}
           <div className="mt-6">
             <p className="mb-3 text-sm md:text-base">Book a 20-Minute Discovery Call — Choose a Time That Works for You</p>
             <a
