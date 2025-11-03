@@ -1,4 +1,5 @@
 import { Calendar, Headphones, Shield, CreditCard, PhoneCall, BarChart3, Star, Quote, HelpCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 function ServiceCard({ icon: Icon, title, desc }) {
   return (
@@ -130,11 +131,28 @@ export default function Sections() {
                 a: '— Operations Director, OrthoPlus Aligners'
               },
             ].map((item, i) => (
-              <figure key={i} className="rounded-2xl border border-black/10 p-6 bg-white/70">
-                <Quote className="mb-3" />
-                <blockquote className="text-sm text-black/80">{item.q}</blockquote>
+              <motion.figure
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.06, ease: 'easeOut' }}
+                className="group relative rounded-2xl border border-black/10 p-6 bg-white/80 backdrop-blur-sm shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:bg-white"
+              >
+                <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: '0 1px 0 0 rgba(0,0,0,0.06) inset' }} />
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-md border border-black/10">
+                    <Quote size={16} />
+                  </div>
+                  <blockquote className="text-sm text-black/80 leading-relaxed">{item.q}</blockquote>
+                </div>
                 <figcaption className="mt-4 text-xs text-black/60">{item.a}</figcaption>
-              </figure>
+                <div className="mt-5 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent" />
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="text-[11px] uppercase tracking-wide text-black/40">Verified Client</span>
+                  <span className="text-[11px] text-black/40 transition-colors group-hover:text-black/60">Read more</span>
+                </div>
+              </motion.figure>
             ))}
           </div>
         </div>
