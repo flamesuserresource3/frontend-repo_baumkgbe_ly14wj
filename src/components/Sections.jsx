@@ -1,15 +1,22 @@
 import { Calendar, Headphones, Shield, CreditCard, PhoneCall, BarChart3, Star, Quote, HelpCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-function ServiceCard({ icon: Icon, title, desc }) {
+function ServiceCard({ icon: Icon, title, desc, index }) {
   return (
-    <div className="group rounded-2xl border border-black/10 p-6 transition-transform hover:-translate-y-1 bg-white/70 backdrop-blur">
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, delay: index * 0.05, ease: 'easeOut' }}
+      whileHover={{ y: -4 }}
+      className="group rounded-2xl border border-black/10 p-6 bg-white/70 backdrop-blur shadow-sm transition-all hover:shadow-md"
+    >
       <div className="mb-4 inline-flex items-center justify-center rounded-xl border border-black/10 w-10 h-10">
         <Icon size={18} />
       </div>
       <h3 className="font-semibold mb-1">{title}</h3>
       <p className="text-sm text-black/70">{desc}</p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -48,12 +55,16 @@ export default function Sections() {
             <p className="text-black/70 mt-2">Velodent’s AI automation suite, delivered with an enterprise-grade experience.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <ServiceCard icon={Headphones} title="AI Receptionist" desc="Answering, triage, and intelligent handoff with natural, compliant voice." />
-            <ServiceCard icon={Calendar} title="Appointment & Recall" desc="Smart booking, rescheduling, and 6‑month hygiene recalls." />
-            <ServiceCard icon={Shield} title="Insurance Verification" desc="Eligibility checks and pre‑auth support before visits." />
-            <ServiceCard icon={CreditCard} title="Payment & Claims" desc="Secure payment links and claim assistance with status updates." />
-            <ServiceCard icon={PhoneCall} title="Lead Follow‑up" desc="Convert ad leads and revive inactive patients automatically." />
-            <ServiceCard icon={BarChart3} title="Dashboard & Analytics" desc="Live KPIs, utilization, and campaign ROI in one view." />
+            {[
+              { icon: Headphones, title: 'AI Receptionist', desc: 'Answering, triage, and intelligent handoff with natural, compliant voice.' },
+              { icon: Calendar, title: 'Appointment & Recall', desc: 'Smart booking, rescheduling, and 6‑month hygiene recalls.' },
+              { icon: Shield, title: 'Insurance Verification', desc: 'Eligibility checks and pre‑auth support before visits.' },
+              { icon: CreditCard, title: 'Payment & Claims', desc: 'Secure payment links and claim assistance with status updates.' },
+              { icon: PhoneCall, title: 'Lead Follow‑up', desc: 'Convert ad leads and revive inactive patients automatically.' },
+              { icon: BarChart3, title: 'Dashboard & Analytics', desc: 'Live KPIs, utilization, and campaign ROI in one view.' },
+            ].map((s, i) => (
+              <ServiceCard key={s.title} icon={s.icon} title={s.title} desc={s.desc} index={i} />
+            ))}
           </div>
         </div>
       </section>
@@ -66,30 +77,39 @@ export default function Sections() {
             <p className="text-black/70 mt-2">Measurable outcomes from real clinics powered by Velodent.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="rounded-2xl border border-black/10 p-6 bg-white/70">
-              <h3 className="font-semibold mb-2">Urban Dental | 3-location DSO</h3>
-              <ul className="text-sm text-black/70 list-disc pl-5 space-y-1">
-                <li>+41% more completed hygiene visits</li>
-                <li>–28% no‑show rate in 60 days</li>
-                <li>2.3× front‑desk productivity</li>
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-black/10 p-6 bg-white/70">
-              <h3 className="font-semibold mb-2">BrightSmile Pediatrics</h3>
-              <ul className="text-sm text-black/70 list-disc pl-5 space-y-1">
-                <li>Insurance checks cut from 7 min → 90 sec</li>
-                <li>24/7 call capture with 96% CSAT</li>
-                <li>$38k added monthly production</li>
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-black/10 p-6 bg-white/70">
-              <h3 className="font-semibold mb-2">OrthoPlus Aligners</h3>
-              <ul className="text-sm text-black/70 list-disc pl-5 space-y-1">
-                <li>+52% lead-to-start conversion</li>
-                <li>Automated braces tighten reminders</li>
-                <li>Full HIPAA audit trail on calls</li>
-              </ul>
-            </div>
+            {[
+              {
+                title: 'Urban Dental | 3-location DSO',
+                bullets: ['+41% more completed hygiene visits', '–28% no‑show rate in 60 days', '2.3× front‑desk productivity'],
+              },
+              {
+                title: 'BrightSmile Pediatrics',
+                bullets: ['Insurance checks cut from 7 min → 90 sec', '24/7 call capture with 96% CSAT', '$38k added monthly production'],
+              },
+              {
+                title: 'OrthoPlus Aligners',
+                bullets: ['+52% lead-to-start conversion', 'Automated braces tighten reminders', 'Full HIPAA audit trail on calls'],
+              },
+            ].map((cs, i) => (
+              <motion.div
+                key={cs.title}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
+                whileHover={{ y: -6 }}
+                className="rounded-2xl border border-black/10 p-6 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md transition-all"
+              >
+                <h3 className="font-semibold mb-2">{cs.title}</h3>
+                <ul className="text-sm text-black/70 list-disc pl-5 space-y-1">
+                  {cs.bullets.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+                <div className="mt-5 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent" />
+                <div className="mt-3 text-[11px] uppercase tracking-wide text-black/40">Performance Snapshot</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -107,27 +127,27 @@ export default function Sections() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                q: '“Velodent feels like an elite front-desk team that never sleeps.”',
+                q: 'Velodent feels like an elite front-desk team that never sleeps.',
                 a: '— Dr. Patel, Downtown Family Dental'
               },
               {
-                q: '“We cut no-shows by nearly a third and filled hygiene gaps automatically.”',
+                q: 'We cut no-shows by nearly a third and filled hygiene gaps automatically.',
                 a: '— Office Manager, CS Dental'
               },
               {
-                q: '“Our online booking rate improved and we saw a 2× ROI within two months.”',
+                q: 'Our online booking rate improved and we saw a 2× ROI within two months.',
                 a: '— Dr. Nguyen, SmileWorks'
               },
               {
-                q: '“Insurance checks went from minutes to seconds — patients notice the difference.”',
+                q: 'Insurance checks went from minutes to seconds — patients notice the difference.',
                 a: '— Billing Lead, BrightSmile Pediatrics'
               },
               {
-                q: '“24/7 coverage means weekend calls finally convert. The pipeline is healthier than ever.”',
+                q: '24/7 coverage means weekend calls finally convert. The pipeline is healthier than ever.',
                 a: '— Practice Owner, Lakeside Dental'
               },
               {
-                q: '“Onboarding was smooth, and support actually feels proactive — not reactive.”',
+                q: 'Onboarding was smooth, and support actually feels proactive — not reactive.',
                 a: '— Operations Director, OrthoPlus Aligners'
               },
             ].map((item, i) => (

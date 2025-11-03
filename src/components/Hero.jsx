@@ -1,9 +1,18 @@
+import Spline from '@splinetool/react-spline';
+
 export default function Hero() {
   return (
-    <section id="home" className="relative pt-24 md:pt-28 bg-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 min-h-[80vh] flex items-center justify-center">
+    <section id="home" className="relative pt-24 md:pt-28 bg-white min-h-[80vh]">
+      {/* Spline background cover */}
+      <div className="absolute inset-0">
+        <Spline scene="https://prod.spline.design/zhZFnwyOYLgqlLWk/scene.splinecode" style={{ width: '100%', height: '100%' }} />
+        {/* Soft gradient for readability, does not block interaction */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.85),rgba(255,255,255,0.95))]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-6 min-h-[80vh] flex items-center justify-center">
         <div className="w-full max-w-5xl text-center">
-          {/* Heading and subheading moved above the video, keeping styles unchanged */}
+          {/* Heading and subheading above the video */}
           <div className="max-w-3xl mx-auto">
             <h1 className="text-3xl md:text-5xl font-semibold tracking-tight mb-3">
               AI Automation for Modern Dental Clinics
@@ -14,7 +23,7 @@ export default function Hero() {
           </div>
 
           {/* Video remains centered with identical size and styling */}
-          <div className="w-full aspect-video rounded-2xl border border-black/10 overflow-hidden shadow-sm mx-auto mt-8 md:mt-10">
+          <div className="w-full aspect-video rounded-2xl border border-black/10 overflow-hidden shadow-sm mx-auto mt-8 md:mt-10 bg-white/70">
             <iframe
               width="100%"
               height="100%"
@@ -34,7 +43,7 @@ export default function Hero() {
               href="https://cal.com/velodent-ogbkfv/20min"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-black px-5 py-2.5 text-sm font-medium hover:-translate-y-px transition-transform"
+              className="inline-flex items-center justify-center rounded-full border border-black px-5 py-2.5 text-sm font-medium hover:-translate-y-px transition-transform bg-white/80 backdrop-blur"
             >
               Book Now
             </a>
